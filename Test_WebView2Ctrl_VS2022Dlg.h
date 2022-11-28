@@ -13,6 +13,8 @@ class CTestwebView2CtrlVS2022Dlg : public CDialogEx
 public:
 	CTestwebView2CtrlVS2022Dlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
+	HRESULT ExecuteScriptResponse(HRESULT errorCode, LPCWSTR result);
+
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_TEST_WEBVIEW2CTRL_VS2022_DIALOG };
@@ -38,4 +40,6 @@ public:
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
+	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
+	afx_msg void OnBnClickedButtonSendMessage();
 };

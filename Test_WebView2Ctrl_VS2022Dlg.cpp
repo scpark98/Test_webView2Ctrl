@@ -8,6 +8,8 @@
 #include "Test_WebView2Ctrl_VS2022Dlg.h"
 #include "afxdialogex.h"
 
+#include "../../Common/Functions.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -70,6 +72,8 @@ BEGIN_MESSAGE_MAP(CTestwebView2CtrlVS2022Dlg, CDialogEx)
 	ON_BN_CLICKED(IDOK, &CTestwebView2CtrlVS2022Dlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL, &CTestwebView2CtrlVS2022Dlg::OnBnClickedCancel)
 	ON_WM_DROPFILES()
+	ON_WM_WINDOWPOSCHANGED()
+	ON_BN_CLICKED(IDC_BUTTON_SEND_MESSAGE, &CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonSendMessage)
 END_MESSAGE_MAP()
 
 
@@ -105,9 +109,12 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
+	RestoreWindowPosition(&theApp, this);
+
 	m_web.set_permission_request_mode(1);
 	m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\_UID_MM_CM_01_008.html"));
 
+	//AfxMessageBox(m_web.get_default_download_path());
 	DragAcceptFiles();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -174,15 +181,17 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 
 	CRect rc;
 	GetClientRect(rc);
+
+	rc.top += 40;
 	m_web.MoveWindow(rc);
 }
 
 
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedOk()
 {
-	m_web.navigate(_T("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-avi-file.avi"));
+	//AfxMessageBox(m_web.get_default_download_path());
+	//m_web.navigate(_T("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-avi-file.avi"));
 }
-
 
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedCancel()
 {
@@ -203,3 +212,27 @@ void CTestwebView2CtrlVS2022Dlg::OnDropFiles(HDROP hDropInfo)
 
 	CDialogEx::OnDropFiles(hDropInfo);
 }
+
+
+void CTestwebView2CtrlVS2022Dlg::OnWindowPosChanged(WINDOWPOS* lpwndpos)
+{
+	CDialogEx::OnWindowPosChanged(lpwndpos);
+
+	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
+	SaveWindowPosition(&theApp, this);
+}
+
+
+void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonSendMessage()
+{
+	m_web.GetWebView()->ExecuteScript(L"MessageReceived('Ayush sent a message from C++ application')",
+		Microsoft::WRL::Callback<ICoreWebView2ExecuteScriptCompletedHandler>(this, &CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse).Get());
+}
+
+
+HRESULT CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse(HRESULT errorCode, LPCWSTR result)
+{
+	AfxMessageBox(_T("C++ Application Popup : Message Sent Successfully"));
+	return S_OK;
+}
+
