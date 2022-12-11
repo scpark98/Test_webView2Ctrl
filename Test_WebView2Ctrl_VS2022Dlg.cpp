@@ -62,6 +62,7 @@ void CTestwebView2CtrlVS2022Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_WEB, m_web);
+	DDX_Control(pDX, IDC_WEB2, m_web2);
 }
 
 BEGIN_MESSAGE_MAP(CTestwebView2CtrlVS2022Dlg, CDialogEx)
@@ -74,6 +75,9 @@ BEGIN_MESSAGE_MAP(CTestwebView2CtrlVS2022Dlg, CDialogEx)
 	ON_WM_DROPFILES()
 	ON_WM_WINDOWPOSCHANGED()
 	ON_BN_CLICKED(IDC_BUTTON_SEND_MESSAGE, &CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonSendMessage)
+	ON_BN_CLICKED(IDC_BUTTON_WEB2_CLEAR, &CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Clear)
+	ON_BN_CLICKED(IDC_BUTTON_WEB2_CAM, &CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Cam)
+	ON_BN_CLICKED(IDC_BUTTON_WEB2_CLEAR_PHOTO, &CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2ClearPhoto)
 END_MESSAGE_MAP()
 
 
@@ -112,22 +116,12 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	RestoreWindowPosition(&theApp, this);
 
 	m_web.set_permission_request_mode(1);
+	m_web2.set_permission_request_mode(1);
 	//m_web.allow_external_drop();
 	//AfxMessageBox(m_web.get_webview2_runtime_version());
-	m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+	m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\cam_capture.html"));
 
-	//AfxMessageBox(m_web.get_default_download_path());
-	CTime t = CTime(1970, 0, 0, 0, 0, 0);
-	
-	//	CTime::GetCurrentTime();
-	if (t == CTime(0, 0, 0, 0, 0, 0))
-	{
-		;
-	}
-	//else if (t > CTimeSpan(0,0,0,0))
-	{
-		;
-	}
 	DragAcceptFiles();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -192,6 +186,8 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 	if (!m_hWnd || !m_web || !m_web.m_hWnd)
 		return;
 
+	//return;
+
 	CRect rc;
 	GetClientRect(rc);
 
@@ -202,6 +198,7 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedOk()
 {
+
 	//AfxMessageBox(m_web.get_default_download_path());
 	//m_web.navigate(_T("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-avi-file.avi"));
 }
@@ -238,8 +235,9 @@ void CTestwebView2CtrlVS2022Dlg::OnWindowPosChanged(WINDOWPOS* lpwndpos)
 
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonSendMessage()
 {
-	m_web.GetWebView()->ExecuteScript(L"MessageReceived('Ayush sent a message from C++ application')",
-		Microsoft::WRL::Callback<ICoreWebView2ExecuteScriptCompletedHandler>(this, &CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse).Get());
+	m_web.execute_jscript(_T("takepicture()"));
+	//m_web.GetWebView()->ExecuteScript(L"MessageReceived('Ayush sent a message from C++ application')",
+	//	Microsoft::WRL::Callback<ICoreWebView2ExecuteScriptCompletedHandler>(this, &CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse).Get());
 }
 
 
@@ -249,3 +247,23 @@ HRESULT CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse(HRESULT errorCode, LPC
 	return S_OK;
 }
 
+
+
+void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Clear()
+{
+	m_web2.navigate(_T("about:blank"));
+}
+
+
+void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Cam()
+{
+	m_web2.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+
+}
+
+
+void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2ClearPhoto()
+{
+	//m_web.execute_jscript("clearphoto()");
+	m_web.execute_jscript("MessageReceived('asdfsa')");
+}
