@@ -11,6 +11,10 @@
 #define IDC_WEB                         1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_SEND_MESSAGE         1001
+#define IDC_WEB2                        1002
+#define IDC_BUTTON_WEB2_CLEAR           1003
+#define IDC_BUTTON_WEB2_CAM             1004
+#define IDC_BUTTON_WEB2_CLEAR_PHOTO     1005
 
 // Next default values for new objects
 // 

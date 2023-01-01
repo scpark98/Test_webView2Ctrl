@@ -36,10 +36,14 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CWebView2Ctrl m_web;
+	CWebView2Ctrl m_web2;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedOk();
 	afx_msg void OnBnClickedCancel();
 	afx_msg void OnDropFiles(HDROP hDropInfo);
 	afx_msg void OnWindowPosChanged(WINDOWPOS* lpwndpos);
 	afx_msg void OnBnClickedButtonSendMessage();
+	afx_msg void OnBnClickedButtonWeb2Clear();
+	afx_msg void OnBnClickedButtonWeb2Cam();
+	afx_msg void OnBnClickedButtonWeb2ClearPhoto();
 };
