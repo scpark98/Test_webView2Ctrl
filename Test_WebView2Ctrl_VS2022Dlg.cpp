@@ -63,6 +63,7 @@ void CTestwebView2CtrlVS2022Dlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_WEB, m_web);
 	DDX_Control(pDX, IDC_WEB2, m_web2);
+	DDX_Control(pDX, IDC_WEB2, m_web2);
 }
 
 BEGIN_MESSAGE_MAP(CTestwebView2CtrlVS2022Dlg, CDialogEx)
@@ -119,20 +120,11 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	m_web2.set_permission_request_mode(1);
 	//m_web.allow_external_drop();
 	//AfxMessageBox(m_web.get_webview2_runtime_version());
-	m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+	m_web.navigate(_T("https://naver.com"));
 
 	//AfxMessageBox(m_web.get_default_download_path());
-	CTime t = CTime(1970, 0, 0, 0, 0, 0);
-	
-	//	CTime::GetCurrentTime();
-	if (t == CTime(0, 0, 0, 0, 0, 0))
-	{
-		;
-	}
-	//else if (t > CTimeSpan(0,0,0,0))
-	{
-		;
-	}
+
 	DragAcceptFiles();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -275,5 +267,6 @@ void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Cam()
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2ClearPhoto()
 {
 	//m_web.execute_jscript("clearphoto()");
-	m_web.execute_jscript("MessageReceived('asdfsa')");
+	//m_web.execute_jscript("MessageReceived('asdfsa')");
+	m_web.Reload();
 }
