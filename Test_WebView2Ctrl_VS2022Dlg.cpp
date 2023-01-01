@@ -114,20 +114,10 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	m_web.set_permission_request_mode(1);
 	//m_web.allow_external_drop();
 	//AfxMessageBox(m_web.get_webview2_runtime_version());
-	m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
-
+	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\bin\\VCC\\htmls\\UID_MM_CM_01_008.html"));
+	//m_web.navigate(_T("https://webrtc.github.io/samples/src/content/devices/input-output/"));
+	m_web.navigate(_T("C:\\Users\\scpark\\Desktop\\test.html"));
 	//AfxMessageBox(m_web.get_default_download_path());
-	CTime t = CTime(1970, 0, 0, 0, 0, 0);
-	
-	//	CTime::GetCurrentTime();
-	if (t == CTime(0, 0, 0, 0, 0, 0))
-	{
-		;
-	}
-	//else if (t > CTimeSpan(0,0,0,0))
-	{
-		;
-	}
 	DragAcceptFiles();
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
@@ -202,6 +192,10 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedOk()
 {
+	//wil::unique_cotaskmem_string uri;
+	//LPWSTR uri;
+	m_web.GetWebView()->OpenDevToolsWindow();
+
 	//AfxMessageBox(m_web.get_default_download_path());
 	//m_web.navigate(_T("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-avi-file.avi"));
 }

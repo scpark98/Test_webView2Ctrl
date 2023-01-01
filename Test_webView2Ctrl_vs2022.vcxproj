@@ -238,7 +238,6 @@
     <ResourceCompile Include="TestwebView2Ctrlvs2022.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="bin\Test_webView2Ctrl_vs2022.exe" />
     <None Include="packages.config" />
     <None Include="res\TestwebView2Ctrlvs2022.rc2" />
   </ItemGroup>
