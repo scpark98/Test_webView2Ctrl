@@ -14,6 +14,12 @@ public:
 	CTestwebView2CtrlVS2022Dlg(CWnd* pParent = nullptr);	// 표준 생성자입니다.
 
 	HRESULT ExecuteScriptResponse(HRESULT errorCode, LPCWSTR result);
+	HRESULT WebMessageReceived(ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args);
+	LRESULT on_webview2_message_create_completed(WPARAM wParam, LPARAM lParam);
+	LRESULT on_webview2_message_navigation_completed(WPARAM wParam, LPARAM lParam);
+
+	//std::unique_ptr<CWebView2Ctrl> m_web;
+	CWebView2Ctrl* m_web;
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -35,7 +41,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	CWebView2Ctrl m_web;
+	//CWebView2Ctrl m_web1;
 	CWebView2Ctrl m_web2;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedOk();
