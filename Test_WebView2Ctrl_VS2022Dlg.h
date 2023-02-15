@@ -19,7 +19,7 @@ public:
 	LRESULT on_webview2_message_navigation_completed(WPARAM wParam, LPARAM lParam);
 
 	//std::unique_ptr<CWebView2Ctrl> m_web;
-	CWebView2Ctrl* m_web;
+	CWebView2Ctrl* m_pWeb;
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME

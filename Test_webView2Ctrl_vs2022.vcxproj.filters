@@ -84,17 +84,11 @@
     <None Include="res\TestwebView2Ctrlvs2022.rc2">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="bin\Test_webView2Ctrl_vs2022.exe">
-      <Filter>bin</Filter>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Test_webView2Ctrl_vs2022.ico">
       <Filter>리소스 파일</Filter>
     </Image>
-  </ItemGroup>
-  <ItemGroup>
-    <Natvis Include="$(MSBuildThisFileDirectory)..\..\natvis\wil.natvis" />
   </ItemGroup>
 </Project>

@@ -56,6 +56,7 @@ CTestwebView2CtrlVS2022Dlg::CTestwebView2CtrlVS2022Dlg(CWnd* pParent /*=nullptr*
 	: CDialogEx(IDD_TEST_WEBVIEW2CTRL_VS2022_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_pWeb = NULL;
 }
 
 void CTestwebView2CtrlVS2022Dlg::DoDataExchange(CDataExchange* pDX)
@@ -126,12 +127,12 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	//m_web = std::make_unique<CWebView2Ctrl>();
 	
 	//동적 생성은 가능하나 Dynamic이 아닌 일반 정적변수가 있어야 앱이 실행된다.
-	m_web = new CWebView2Ctrl();
+	m_pWeb = new CWebView2Ctrl();
 	CRect rc;
 	GetClientRect(rc);
 	rc.right = 100;
-	m_web->m_create_static = false;
-	m_web->CreateAsync(WS_VISIBLE | WS_CHILD, rc, this, 1234);
+	m_pWeb->m_create_static = false;
+	m_pWeb->CreateAsync(WS_VISIBLE | WS_CHILD, rc, this, 1234);
 	//m_web = *m_web_temp;
 
 	//m_web.set_permission_request_mode(1);
@@ -145,8 +146,8 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\temp_web_server\\VCC\\htmls\\cam_capture.html"));
 	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\temp_web_server\\cam_capture.html"));
 
-	//m_web2.set_permission_request_mode(1);
-	//m_web2.navigate(_T("c:\\scpark\\cam_capture.html"));
+	m_web2.set_permission_request_mode(1);
+	m_web2.navigate(_T("c:\\scpark\\cam_capture.html"));
 
 	DragAcceptFiles();
 
@@ -209,7 +210,7 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 	CDialogEx::OnSize(nType, cx, cy);
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	if (!m_hWnd || !m_web || !m_web)
+	if (!m_hWnd || !m_pWeb || !m_web2)
 		return;
 
 	//return;
@@ -219,10 +220,10 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 
 	rc.top += 40;
 	rc.right = rc.Width() / 2;
-	m_web->MoveWindow(rc);
+	m_pWeb->MoveWindow(rc);
 
 	rc.OffsetRect(rc.Width(), 0);
-	//m_web2.MoveWindow(rc);
+	m_web2.MoveWindow(rc);
 }
 
 HRESULT CTestwebView2CtrlVS2022Dlg::WebMessageReceived(ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args)
@@ -241,12 +242,6 @@ HRESULT CTestwebView2CtrlVS2022Dlg::WebMessageReceived(ICoreWebView2* sender, IC
 #include <wil/com.h>
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedOk()
 {
-	EventRegistrationToken token;
-	m_web->GetWebView()->add_WebMessageReceived(Microsoft::WRL::Callback<ICoreWebView2WebMessageReceivedEventHandler>(this, &CTestwebView2CtrlVS2022Dlg::WebMessageReceived).Get(), &token);
-
-	m_web->navigate(_T("https://koino.hanvision.xyz/share.html?id=1234&session=56&type=agent"));
-	//m_web.navigate(_T("https://appassets/cam_capture.html"));
-	//m_web.navigate(_T("file:///c:/scpark/cam2.html"));
 
 	//AfxMessageBox(m_web.get_default_download_path());
 	//m_web.navigate(_T("https://www.learningcontainer.com/wp-content/uploads/2020/05/sample-avi-file.avi"));
@@ -255,6 +250,12 @@ void CTestwebView2CtrlVS2022Dlg::OnBnClickedOk()
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedCancel()
 {
 	// TODO: 여기에 컨트롤 알림 처리기 코드를 추가합니다.
+	if (m_pWeb)
+	{
+		m_pWeb->DestroyWindow();
+		delete m_pWeb;
+	}
+
 	CDialogEx::OnCancel();
 }
 
@@ -267,7 +268,7 @@ void CTestwebView2CtrlVS2022Dlg::OnDropFiles(HDROP hDropInfo)
 
 	DragQueryFile(hDropInfo, 0, sfile, MAX_PATH);
 
-	m_web->navigate(sfile);
+	m_pWeb->navigate(sfile);
 
 	CDialogEx::OnDropFiles(hDropInfo);
 }
@@ -285,7 +286,7 @@ void CTestwebView2CtrlVS2022Dlg::OnWindowPosChanged(WINDOWPOS* lpwndpos)
 //관리자 권한으로 실행한 앱에서는 안뜬다.
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonSendMessage()
 {
-	m_web->execute_jscript(_T("takepicture('capture.jpg')"));
+	m_pWeb->execute_jscript(_T("takepicture('capture.jpg')"));
 	//m_web.GetWebView()->ExecuteScript(L"MessageReceived('Ayush sent a message from C++ application')",
 	//	Microsoft::WRL::Callback<ICoreWebView2ExecuteScriptCompletedHandler>(this, &CTestwebView2CtrlVS2022Dlg::ExecuteScriptResponse).Get());
 }
@@ -315,24 +316,19 @@ void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2Cam()
 void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2ClearPhoto()
 {
 	//m_web.execute_jscript("clearphoto()");
-	m_web->execute_jscript("MessageReceived('asdfsa')");
+	m_pWeb->execute_jscript("MessageReceived('asdfsa')");
 }
 
 LRESULT CTestwebView2CtrlVS2022Dlg::on_webview2_message_create_completed(WPARAM wParam, LPARAM lParam)
 {
-	if ((CWnd*)wParam != m_web)
-		return 0;
-
-	m_web->set_permission_request_mode(1);
-	m_web->navigate(_T("c:\\scpark\\cam_capture.html"));
+	m_pWeb->set_permission_request_mode(1);
+	m_pWeb->navigate(_T("c:\\scpark\\cam_capture.html"));
 	return 0;
 }
 
 LRESULT CTestwebView2CtrlVS2022Dlg::on_webview2_message_navigation_completed(WPARAM wParam, LPARAM lParam)
 {
-	if ((CWnd*)wParam != m_web)
-		return 0;
-
-	AfxMessageBox(__function__);
+	//m_pWeb->GetWebView()->OpenDevToolsWindow();
 	return 0;
 }
+
