@@ -63,6 +63,7 @@ void CTestwebView2CtrlVS2022Dlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	//DDX_Control(pDX, IDC_WEB, m_web);
+	DDX_Control(pDX, IDC_WEB1, m_web1);
 	DDX_Control(pDX, IDC_WEB2, m_web2);
 }
 
@@ -117,7 +118,6 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 작은 아이콘을 설정합니다.
 
 	// TODO: 여기에 추가 초기화 작업을 추가합니다.
-	RestoreWindowPosition(&theApp, this);
 
 	//m_web.GetWebView()->Release();
 	//m_web.DestroyWindow();
@@ -131,8 +131,15 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	CRect rc;
 	GetClientRect(rc);
 	rc.right = 100;
+
+	//3개의 웹뷰를 사용.
+	//맨 좌측은 동적 생성.
+	//중간과 맨 우측은 대화상자에 선언된 정적 생성
+
+	//동적으로 생성할 경우
 	m_pWeb->m_create_static = false;
-	m_pWeb->CreateAsync(WS_VISIBLE | WS_CHILD, rc, this, 1234);
+	m_pWeb->CreateAsync(WS_VISIBLE | WS_CHILD, rc, this, 12345);
+	m_pWeb->navigate(_T("https://anysupport.net"));
 	//m_web = *m_web_temp;
 
 	//m_web.set_permission_request_mode(1);
@@ -146,10 +153,19 @@ BOOL CTestwebView2CtrlVS2022Dlg::OnInitDialog()
 	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\temp_web_server\\VCC\\htmls\\cam_capture.html"));
 	//m_web.navigate(_T("C:\\scpark\\1.Projects_C++\\NH\\temp_web_server\\cam_capture.html"));
 
+	//resource editor에서 정적 컨트롤로 생성한 경우
+	m_web1.navigate(_T("https://www.google.com"));
 	m_web2.set_permission_request_mode(1);
-	m_web2.navigate(_T("c:\\scpark\\cam_capture.html"));
+	m_web2.navigate(_T("https://www.naver.com"));
 
 	DragAcceptFiles();
+
+	m_resize.Create(this);
+	m_resize.Add(12345, 0, 0, 33, 100);
+	m_resize.Add(IDC_WEB1, 33, 0, 33, 100);
+	m_resize.Add(IDC_WEB2, 66, 0, 34, 100);
+
+	RestoreWindowPosition(&theApp, this);
 
 	return TRUE;  // 포커스를 컨트롤에 설정하지 않으면 TRUE를 반환합니다.
 }
@@ -210,10 +226,9 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 	CDialogEx::OnSize(nType, cx, cy);
 
 	// TODO: 여기에 메시지 처리기 코드를 추가합니다.
-	if (!m_hWnd || !m_pWeb || !m_web2)
+	/*
+	if (!m_hWnd || !m_pWeb || !m_web1 || !m_web2)
 		return;
-
-	//return;
 
 	CRect rc;
 	GetClientRect(rc);
@@ -224,6 +239,7 @@ void CTestwebView2CtrlVS2022Dlg::OnSize(UINT nType, int cx, int cy)
 
 	rc.OffsetRect(rc.Width(), 0);
 	m_web2.MoveWindow(rc);
+	*/
 }
 
 HRESULT CTestwebView2CtrlVS2022Dlg::WebMessageReceived(ICoreWebView2* sender, ICoreWebView2WebMessageReceivedEventArgs* args)
@@ -322,7 +338,7 @@ void CTestwebView2CtrlVS2022Dlg::OnBnClickedButtonWeb2ClearPhoto()
 LRESULT CTestwebView2CtrlVS2022Dlg::on_webview2_message_create_completed(WPARAM wParam, LPARAM lParam)
 {
 	m_pWeb->set_permission_request_mode(1);
-	m_pWeb->navigate(_T("c:\\scpark\\cam_capture.html"));
+	//m_pWeb->navigate(_T("c:\\scpark\\cam_capture.html"));
 	return 0;
 }
 

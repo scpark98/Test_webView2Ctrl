@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "../../Common/ResizeCtrl.h"
 #include "../../Common/webView2Ctrl/WebView2Ctrl.h"
 
 // CTestwebView2CtrlVS2022Dlg 대화 상자
@@ -20,6 +21,9 @@ public:
 
 	//std::unique_ptr<CWebView2Ctrl> m_web;
 	CWebView2Ctrl* m_pWeb;
+
+protected:
+	CResizeCtrl		m_resize;
 
 // 대화 상자 데이터입니다.
 #ifdef AFX_DESIGN_TIME
@@ -41,7 +45,7 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-	//CWebView2Ctrl m_web1;
+	CWebView2Ctrl m_web1;
 	CWebView2Ctrl m_web2;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnBnClickedOk();

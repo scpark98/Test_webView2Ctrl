@@ -1,6 +1,6 @@
 ﻿//{{NO_DEPENDENCIES}}
-// Microsoft Visual C++에서 생성한 포함 파일입니다.
-// TestwebView2Ctrlvs2022.rc에서 사용되고 있습니다.
+// Microsoft Visual C++ generated include file.
+// Used by TestwebView2Ctrlvs2022.rc
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -9,6 +9,7 @@
 #define IDR_MAINFRAME                   128
 #define IDC_CUSTOM1                     1000
 #define IDC_WEB                         1000
+#define IDC_WEB1                        1000
 #define IDC_BUTTON1                     1001
 #define IDC_BUTTON_SEND_MESSAGE         1001
 #define IDC_WEB2                        1002
